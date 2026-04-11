@@ -8,7 +8,9 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "nolmpliciyAny":false
+    "nolmpliciyAny":false,
+    "strict": false,
+    "skipLibCheck": true
   },
   "include": [
     "src"
