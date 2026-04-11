@@ -2,16 +2,13 @@
   "name": "arc-blitz",
   "private": true,
   "version": "0.1.0",
-  "workspaces": ["frontend",
-    "backend",
-    "shared"
-  ],
+  "workspaces": ["frontend", "backend", "shared"],
   "scripts": {
     "dev": "npm-run-all --parallel dev:shared dev:backend dev:frontend",
     "dev:shared": "npm --workspace shared run dev",
     "dev:backend": "npm --workspace backend run dev",
     "dev:frontend": "npm --workspace frontend run dev",
-    "build": "npm run build:shared && npm run build:backend && npm run build:frontend",
+    "build": "npm run build:shared && npm run build:backend",
     "build:shared": "npm --workspace shared run build",
     "build:backend": "npm --workspace backend run build",
     "build:frontend": "npm --workspace frontend run build"
