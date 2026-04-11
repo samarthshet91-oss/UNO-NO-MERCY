@@ -2,7 +2,7 @@
   "name": "arc-blitz",
   "private": true,
   "version": "0.1.0",
-  "workspaces": [
+  "workspaces": ["frontend",
     "backend",
     "shared"
   ],
