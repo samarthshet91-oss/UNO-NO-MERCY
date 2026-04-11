@@ -8,7 +8,7 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "nolmpliciyAny":false,
+    "noImplicitAny":false,
     "strict": false,
     "skipLibCheck": true
   },
