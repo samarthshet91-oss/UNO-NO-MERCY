@@ -12,12 +12,5 @@
     "strict": false,
     "skipLibCheck": true
   },
-  "include": [
-    "src"
-  ],
-  "references": [
-    {
-      "path": "../shared"
-    }
-  ]
+  "include": ["src"]
 }
