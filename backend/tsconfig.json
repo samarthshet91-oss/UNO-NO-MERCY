@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@arc-blitz/shared":["../shared/dist/index.d.ts"]
+      "@arc-blitz/shared":["../shared/src"]
     },
     "outDir": "dist",
     "rootDir": "src",
