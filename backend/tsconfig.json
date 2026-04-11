@@ -1,6 +1,10 @@
 {
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@arc-blitz/shared":["../shared/dist/index.d.ts"]
+    },
     "outDir": "dist",
     "rootDir": "src",
     "module": "ESNext",
