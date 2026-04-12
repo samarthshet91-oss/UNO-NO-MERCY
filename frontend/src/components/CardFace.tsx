@@ -1,6 +1,6 @@
 import type { Card } from "@arc-blitz/shared";
 
-const labelMap: Record<Card["kind"], string> = {
+const labelMap: Record<string, string> = {
   number: "",
   skip: "SKIP",
   reverse: "FLIP",
@@ -16,7 +16,7 @@ const labelMap: Record<Card["kind"], string> = {
 };
 
 function getValue(card: Card) {
-  return card.kind === "number" ? String(card.value) : labelMap[card.kind];
+  return card.kind === "number" ? String(card.value) : (labelMap[card.kind] ?? String(card.value));
 }
 
 export function CardFace({ card, compact = false }: { card: Card; compact?: boolean }) {
