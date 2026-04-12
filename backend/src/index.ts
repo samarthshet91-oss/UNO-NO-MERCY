@@ -24,7 +24,7 @@ const allowedOrigins =[
   "http://localhost:5174",
   "http://127.0.0.1:5174",
   "https://uno-no-mercy-frontend.vercel.app",
-  "https://uno-no-mercy-frontend-no1istoth-samarthshet91-oss-projects.vercel.app",
+  "https://uno-no-mercy-frontend-h1ddxg4yf-samarthshet91-oss-projects.vercel.app",
   "https://implicate-anchovy-contently.ngrok-free.dev",
 ];
 app.use(cors({
