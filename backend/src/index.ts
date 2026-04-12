@@ -35,11 +35,7 @@ app.use(express.json());
 const server = http.createServer(app);
 const io = new Server<SocketClientToServerEvents, SocketServerToClientEvents>(server, {
   cors: {
-    origin: [
-      "http://localhost:5173",
-      "http://127.0.0.1:5173",
-      "https://implicate-anchovy-contently.ngrok-free.dev",
-    ],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
