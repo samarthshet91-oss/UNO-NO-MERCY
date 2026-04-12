@@ -9,11 +9,7 @@
     "resolveJsonModule": true,
     "noImplicitAny":false,
     "strict": false,
-    "skipLibCheck":true,
-     "baseUrl": ".",
-    "paths": {
-      "@arc-blitz/shared":["../shared/dist/index.d.ts"]
-    }
+    "skipLibCheck":true
   },
   "include": ["src"]
 }

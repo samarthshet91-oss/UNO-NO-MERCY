@@ -10,7 +10,7 @@ import {
   type RoomSettings,
   type ServerGameState,
   type ServerPlayerState,
-} from "@arc-blitz/shared";
+} from "../../../shared/dist/index.js";
 const CARD_COLORS: CardColor[]=["crimson","cyan","lime"];
 
 const STARTING_HAND_SIZE = 7;

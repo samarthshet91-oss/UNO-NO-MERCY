@@ -3,7 +3,7 @@ import type {
   PlayerProfile,
   RoomSettings,
   RoomState,
-} from "@arc-blitz/shared";
+} from "../../../shared/dist/index.js";
 import {
   canRoomStart,
   createSnapshot,
