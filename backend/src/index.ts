@@ -10,7 +10,7 @@ import type {
   SocketClientToServerEvents,
   SocketServerToClientEvents,
   StartGamePayload,
-} from "@arc-blitz/shared";
+} from "../../shared/src/index";
 import { drawForPlayer, maybeAutoDraw, playCard } from "./game/engine.js";
 import { RoomManager } from "./rooms/roomManager.js";
 
