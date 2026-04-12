@@ -10,7 +10,7 @@ import {
   type RoomSettings,
   type ServerGameState,
   type ServerPlayerState,
-} from "../../../shared/dist/index.js";
+} from "../../../shared/dist/index";
 const CARD_COLORS: CardColor[]=["crimson","cyan","lime"];
 
 const STARTING_HAND_SIZE = 7;
