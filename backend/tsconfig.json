@@ -1,12 +1,7 @@
 {
   "extends": "../tsconfig.base.json",
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@arc-blitz/shared":["../shared/src"]
-    },
+  "compilerOptions": { 
     "outDir": "dist",
-    "rootDir": "src",
     "module": "NodeNext",
     "target": "ES2020",
     "moduleResolution": "NodeNext",
@@ -14,7 +9,11 @@
     "resolveJsonModule": true,
     "noImplicitAny":false,
     "strict": false,
-    "skipLibCheck": true
+    "skipLibCheck":true,
+     "baseUrl": ".",
+    "paths": {
+      "@arc-blitz/shared":["../shared/dist"]
+    }
   },
   "include": ["src"]
 }

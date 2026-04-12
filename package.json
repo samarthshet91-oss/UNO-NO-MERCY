@@ -10,7 +10,8 @@
     "dev:frontend": "npm --workspace frontend run dev",
     "build": "npm run build:shared && npm run build:backend",
     "build:shared": "npm --workspace shared run build",
-    "build:backend": "npm --workspace backend run build"
+    "build:backend": "npm --workspace backend run build",
+    "build:frontend": "npm --workspace frontend run build"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.5",
