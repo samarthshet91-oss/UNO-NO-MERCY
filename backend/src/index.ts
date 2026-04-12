@@ -20,13 +20,15 @@ app.get("/", (_req, res) => {
 });
 const allowedOrigins =[
   "http://localhost:5173",
-  "http://localhost:5174",
   "http://127.0.0.1:5173",
+  "http://localhost:5174",
+  "http://127.0.0.1:5174",
   "https://implicate-anchovy-contently.ngrok-free.dev",
 ];
 app.use(cors({
   origin: allowedOrigins,
   methods: ["GET", "POST"],
+  credentials: true,
 }));
 app.use(express.json());
 
@@ -39,7 +41,9 @@ const io = new Server<SocketClientToServerEvents, SocketServerToClientEvents>(se
       "https://implicate-anchovy-contently.ngrok-free.dev",
     ],
     methods: ["GET", "POST"],
+    credentials: true,
   },
+  transports: ["polling", "websocket"],
 });
 
 const roomManager = new RoomManager();

@@ -45,8 +45,8 @@ function App() {
     useEffect(() => {
         const sessionId = getSessionId();
         const nextSocket = io(SERVER_URL, {
-            transports: ["websocket"],
-            secure:true,
+            transports: ["polling","websocket"],
+            withCredentials:true,
         });
         nextSocket.on("room:joined", ({ playerId: joinedPlayerId }) => {
             setPlayerId(joinedPlayerId);
