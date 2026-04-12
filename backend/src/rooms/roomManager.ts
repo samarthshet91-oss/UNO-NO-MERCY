@@ -3,7 +3,7 @@ import type {
   PlayerProfile,
   RoomSettings,
   RoomState,
-} from "../../../shared/dist/index";
+} from "../../../shared/src/index";
 import {
   canRoomStart,
   createSnapshot,

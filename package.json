@@ -8,8 +8,7 @@
     "dev:shared": "npm --workspace shared run dev",
     "dev:backend": "npm --workspace backend run dev",
     "dev:frontend": "npm --workspace frontend run dev",
-    "build": "npm run build:shared && npm run build:backend",
-    "build:shared": "npm run build --workspace=@arc-blitz/shared",
+    "build": "npm run build:backend",
     "build:backend": "npm run build --workspace=@arc-blitz/backend",
     "build:frontend": "npm --workspace frontend run build"
   },
