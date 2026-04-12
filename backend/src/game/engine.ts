@@ -11,7 +11,7 @@ import {
   type ServerGameState,
   type ServerPlayerState,
 } from "../../../shared/src/index";
-const CARD_COLORS: CardColor[]=["crimson","cyan","lime"];
+const CARD_COLORS: CardColor[]=["red","blue","green","yellow"];
 
 const STARTING_HAND_SIZE = 7;
 const MAX_PLAYERS = 6;
@@ -22,6 +22,19 @@ const actionValues: Record<Exclude<CardKind, "number">, Card["value"]> = {
   draw_two: "draw2",
   wild: "wild",
   wild_draw_four: "wild4",
+  wild_draw_six: "wild_draw6",
+  wild_draw_ten: "wild_draw10",
+  wild_reverse_draw_four: "wild_reverse_draw4",
+  wild_color_roulette: "wild_color_roulette",
+  skip_everyone: "skip_everyone",
+  discard_all: "discard_all",
+};
+const penaltyAmounts: Partial<Record<CardKind, number>> = {
+  draw_two: 2,
+  wild_draw_four: 4,
+  wild_draw_six: 6,
+  wild_draw_ten: 10,
+  wild_reverse_draw_four: 4,
 };
 
 export class GameRuleError extends Error {}
@@ -64,10 +77,10 @@ export function createDeck() {
   const cards: Card[] = [];
 
   for (const color of CARD_COLORS) {
-    for (let value = 0; value <= 9; value += 1) {
+    cards.push(createCard(color, "number", 0));
+    for (let value = 1; value <= 9; value += 1) {
       cards.push(createCard(color, "number", value));
-      if (value !== 0) {
-        cards.push(createCard(color, "number", value));
+      cards.push(createCard(color, "number", value));
       }
     }
 
@@ -75,16 +88,22 @@ export function createDeck() {
       cards.push(createCard(color, "skip"));
       cards.push(createCard(color, "reverse"));
       cards.push(createCard(color, "draw_two"));
+      cards.push(createCard(color,"skip_everyone"));
+      cards.push(createCard(color,"discard_all"));
     }
   }
 
   for (let count = 0; count < 4; count += 1) {
     cards.push(createCard("wild", "wild"));
     cards.push(createCard("wild", "wild_draw_four"));
+    cards.push(createCard("wild", "wild_draw_six"));
+    cards.push(createCard("wild", "wild_draw_ten"));
+    cards.push(createCard("wild", "wild_reverse_draw_four"));
+    cards.push(createCard("wild", "wild_color_roulette"));
   }
 
   return shuffle(cards);
-}
+
 
 function nextIndexFrom(current: number, total: number, direction: 1 | -1, distance = 1) {
   return (current + direction * distance + total * 10) % total;
@@ -126,11 +145,14 @@ function reshuffleDiscard(game: ServerGameState) {
 
 function pickOpeningDiscard(deck: Card[]) {
   let card = deck.pop();
-  while (card && (card.kind === "wild" || card.kind === "wild_draw_four")) {
+  while (card && (card.kind !== "number")) {
     deck.unshift(card);
     card = deck.pop();
   }
-  return card ?? createCard("crimson", "number", 0);
+  if(!card) {
+    throw new GameRuleError("Could not find a valid opening number card.");
+  }
+  return card;
 }
 
 function resolveEliminatedPlayer(game: ServerGameState, player: ServerPlayerState) {
@@ -179,11 +201,17 @@ export function initializeGame(players: PlayerProfile[]) {
     players: serverPlayers,
     drawPile: deck,
     discardPile: [openingDiscard],
-    currentColor: openingDiscard.color === "wild" ? "crimson" : openingDiscard.color,
+    currentColor: openingDiscard.color === "wild" ? "red" : openingDiscard.color,
     turnIndex: 0,
     direction: 1,
     pendingDraw: 0,
     pendingPenaltyKind: null,
+    mustRespondWithPenalty: false,
+    activeColor: openingDiscard.color === "wild" ? "red" : openingDiscard.color,
+    eliminatedPlayerIds: [],
+    pendingSwap: false,
+    pendingRotate: false,
+    pendingColorRoulette: false,
     winnerId: null,
     lastAction: null,
     log: [],
@@ -320,6 +348,15 @@ export function playCard(
   }
 
   const card = currentPlayer.hand[cardIndex];
+  if(penaltyAmounts[card.kind]){
+    const amount = penaltyAmounts[card.kind]!;
+    if (game.pendingDraw >0){
+      game.pendingDraw += amount;
+    }else{
+      game.pendingDraw = amount;
+    }
+    game.pendingPenaltyKind=card.kind;
+  }
   const playableCards = getPlayableCards(currentPlayer.hand, game, settings);
   const isPlayable = playableCards.some((entry) => entry.id === card.id);
   if (!isPlayable) {
@@ -332,6 +369,39 @@ export function playCard(
 
   currentPlayer.hand.splice(cardIndex, 1);
   currentPlayer.handCount = currentPlayer.hand.length;
+  if(penaltyAmounts[card.kind]){
+    const amount = penaltyAmounts[card.kind]!;
+    if (game.pendingDraw > 0){
+      game.pendingDraw += amount;
+    }else{
+      game.pendingDraw = amount;
+    }
+    game.pendingPenaltyKind=card.kind;
+  }
+  if (card.kind ==="skip_everyone"){
+    return game;
+  }
+  if (card.kind === "discard_all"){
+    const sameColorCards = currentPlayer.hand.filter(c => c.color === card.color);
+    for (const c of sameColorCards) { 
+      game.discardPile.push(c);
+    }
+    currentPlayer.hand = currentPlayer.hand.filter(c => c.color !== card.color);
+    currentPlayer.handCount = currentPlayer.hand.length;
+  }
+  if(card.kind === "wild_color_roulette"){
+    const colors: CardColor[] = ["red", "blue", "green", "yellow"];
+    game.currentColor = colors[Math.floor(Math.random() * colors.length)];
+  }
+  if (card.kind === "wild_reverse_draw_four"){
+    game.direction = game.direction === 1 ? -1 : 1;
+    if(GameRuleError.pendingDraw > 0){
+      game.pendingDraw += 4;
+    }else{
+      game.pendingDraw = 4;
+    }
+    game.pendingPenaltyKind="wild_reverse_draw_four";
+  }
   game.discardPile.push(card);
   game.lastAction = `${currentPlayer.name} played ${describeCard(card)}.`;
   game.currentColor =

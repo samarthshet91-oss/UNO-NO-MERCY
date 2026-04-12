@@ -1,18 +1,18 @@
 export const GAME_TITLE = "Arc Blitz";
 
-export const CARD_COLORS = ["crimson", "cyan", "lime", "gold"] as const;
-export const PENALTY_KINDS = ["draw_two", "wild_draw_four"] as const;
+export const CARD_COLORS = ["red", "blue", "green", "yellow"] as const;
+export const PENALTY_KINDS = ["draw_two", "wild_draw_four","wild_draw_six","wild_draw_ten","wild_reverse_draw__four",] as const;
 
 export type CardColor = (typeof CARD_COLORS)[number];
 export type PenaltyKind = (typeof PENALTY_KINDS)[number];
-export type CardKind = "number" | "skip" | "reverse" | PenaltyKind | "wild";
+export type CardKind = "number" | "skip" | "reverse" | PenaltyKind | "wild" | "skip_everyone" | "discard_all" | "wild_color_roulette";
 export type MatchPhase = "waiting" | "playing" | "finished";
 
 export interface Card {
   id: string;
   color: CardColor | "wild";
   kind: CardKind;
-  value: number | "skip" | "reverse" | "draw2" | "wild" | "wild4";
+  value: number | "skip" | "reverse" | "draw2" | "wild" | "wild4" | "skip_everyone" | "discard_all" | "wild_color_roulette" | "wild_draw6" | "wild_draw10" | "wild_reverse_draw4";
 }
 
 export interface RoomSettings {
@@ -60,6 +60,12 @@ export interface ServerGameState {
   turnIndex: number;
   direction: 1 | -1;
   pendingDraw: number;
+  mustRespondWithPenalty: boolean;
+  activeColor: CardColor | "wild";
+  eliminatedPlayerIds: string[];
+  pendingSwap: boolean;
+  pendingRotate: boolean;
+  pendingColorRoulette: boolean;
   pendingPenaltyKind: PenaltyKind | null;
   winnerId: string | null;
   lastAction: string | null;
