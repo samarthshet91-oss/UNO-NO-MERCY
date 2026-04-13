@@ -28,7 +28,19 @@ const allowedOrigins =[
   "https://implicate-anchovy-contently.ngrok-free.dev",
 ];
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    if (
+      !origin ||
+      origin.includes("vercel.app") ||
+      origin.includes("localhost") ||
+      origin.includes("127.0.0.1") ||
+      origin.includes("ngrok")
+    ) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS blocked"));
+    }
+  },
   methods: ["GET", "POST"],
   credentials: true,
 }));
@@ -37,7 +49,19 @@ app.use(express.json());
 const server = http.createServer(app);
 const io = new Server<SocketClientToServerEvents, SocketServerToClientEvents>(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      if (
+        !origin ||
+        origin.includes("vercel.app") ||
+        origin.includes("localhost") ||
+        origin.includes("127.0.0.1") ||
+        origin.includes("ngrok")
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS blocked"));
+      }
+    },
     methods: ["GET", "POST"],
     credentials: true,
   },
