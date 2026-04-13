@@ -25,9 +25,10 @@ export function CardFace({ card, compact = false }: { card: Card; compact?: bool
     <div className={className}>
       <div className="card-edge" />
       <div className="card-inner">
-        <span className="card-corner">{getValue(card)}</span>
+        <span className="card-corner top-left">{getValue(card)}</span>
         <div className="card-glyph">{getValue(card)}</div>
-        <span className="card-name">{card.kind === "number" ? card.color : labelMap[card.kind]}</span>
+        <span className="card-name">{card.kind === "number" ? card.color.toUpperCase() : labelMap[card.kind]}</span>
+        <span className="card-corner bottom-right">{getValue(card)}</span>
       </div>
     </div>
   );
