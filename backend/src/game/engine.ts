@@ -82,7 +82,7 @@ export function createDeck() {
       cards.push(createCard(color, "number", value));
       cards.push(createCard(color, "number", value));
       }
-    }
+    
 
     for (let count = 0; count < 2; count += 1) {
       cards.push(createCard(color, "skip"));
@@ -103,7 +103,7 @@ export function createDeck() {
   }
 
   return shuffle(cards);
-
+}
 
 function nextIndexFrom(current: number, total: number, direction: 1 | -1, distance = 1) {
   return (current + direction * distance + total * 10) % total;
@@ -322,6 +322,12 @@ export function describeCard(card: Card) {
     draw_two: "Draw Two",
     wild: "Wild",
     wild_draw_four: "Wild Draw Four",
+    wild_draw_six: "Wild Draw Six",
+    wild_draw_ten: "Wild Draw Ten",
+    wild_reverse_draw_four: "Wild Reverse Draw Four",
+    wild_color_roulette: "Wild Color Roulette",
+    skip_everyone: "Skip Everyone",
+    discard_all: "Discard All",
   };
   return `${colorPart} ${labelMap[card.kind]}`;
 }
@@ -355,7 +361,15 @@ export function playCard(
     }else{
       game.pendingDraw = amount;
     }
+    if(
+      card.kind === "draw_two" ||
+      card.kind === "wild_draw_four" ||
+      card.kind === "wild_draw_six" ||
+      card.kind === "wild_draw_ten" ||
+      card.kind === "wild_reverse_draw_four"  
+    ) {
     game.pendingPenaltyKind=card.kind;
+    }
   }
   const playableCards = getPlayableCards(currentPlayer.hand, game, settings);
   const isPlayable = playableCards.some((entry) => entry.id === card.id);
@@ -376,7 +390,15 @@ export function playCard(
     }else{
       game.pendingDraw = amount;
     }
+    if(
+      card.kind === "draw_two" ||
+      card.kind === "wild_draw_four" ||
+      card.kind === "wild_draw_six" ||
+      card.kind === "wild_draw_ten" ||
+      card.kind === "wild_reverse_draw_four"  
+    ) {
     game.pendingPenaltyKind=card.kind;
+    }
   }
   if (card.kind ==="skip_everyone"){
     return game;
@@ -395,18 +417,18 @@ export function playCard(
   }
   if (card.kind === "wild_reverse_draw_four"){
     game.direction = game.direction === 1 ? -1 : 1;
-    if(GameRuleError.pendingDraw > 0){
+    if(game.pendingDraw > 0){
       game.pendingDraw += 4;
     }else{
       game.pendingDraw = 4;
     }
-    game.pendingPenaltyKind="wild_reverse_draw_four";
+    game.pendingPenaltyKind=card.kind;
   }
   game.discardPile.push(card);
   game.lastAction = `${currentPlayer.name} played ${describeCard(card)}.`;
   game.currentColor =
     card.color === "wild"
-      ? declaredColor ?? "crimson"
+      ? declaredColor ?? "red"
       : card.color;
 
   game.pendingPenaltyKind = game.pendingDraw > 0 && (card.kind === "draw_two" || card.kind === "wild_draw_four")
@@ -502,7 +524,7 @@ export function createSnapshot(
       players: [],
       localHand: [],
       discardTop: null,
-      currentColor: "crimson",
+      currentColor: "red",
       drawPileCount: 0,
       direction: 1,
       pendingDraw: 0,

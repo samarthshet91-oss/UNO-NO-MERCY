@@ -178,7 +178,7 @@ export class RoomManager {
       })),
       localHand: [],
       discardTop: null,
-      currentColor: "crimson",
+      currentColor: "red",
       drawPileCount: 0,
       direction: 1,
       pendingDraw: 0,

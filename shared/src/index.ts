@@ -1,7 +1,7 @@
 export const GAME_TITLE = "Arc Blitz";
 
 export const CARD_COLORS = ["red", "blue", "green", "yellow"] as const;
-export const PENALTY_KINDS = ["draw_two", "wild_draw_four","wild_draw_six","wild_draw_ten","wild_reverse_draw__four",] as const;
+export const PENALTY_KINDS = ["draw_two", "wild_draw_four","wild_draw_six","wild_draw_ten","wild_reverse_draw_four",] as const;
 
 export type CardColor = (typeof CARD_COLORS)[number];
 export type PenaltyKind = (typeof PENALTY_KINDS)[number];
