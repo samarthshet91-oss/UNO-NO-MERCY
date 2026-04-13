@@ -7,10 +7,10 @@
   --line: rgba(176, 226, 255, 0.12);
   --text: #f5fbff;
   --muted: #9fc0d4;
-  --crimson: #ff5d6c;
-  --cyan: #49d3ff;
-  --lime: #89ef64;
-  --gold: #ffce47;
+  --red: #ff5d6c;
+  --blue: #49d3ff;
+  --green: #89ef64;
+  --yellow: #ffce47;
   --wild: linear-gradient(135deg, #ff5d6c 0%, #49d3ff 35%, #89ef64 65%, #ffce47 100%);
   --danger: #ff7d71;
   --shadow: 0 24px 48px rgba(0, 0, 0, 0.35);

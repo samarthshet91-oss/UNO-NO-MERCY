@@ -36,7 +36,7 @@ function getSessionId() {
 }
 
 function sortHand(hand: Card[]) {
-  const colorOrder = ["crimson", "cyan", "lime", "gold", "wild"];
+  const colorOrder = ["red", "blue", "green", "yellow", "wild"];
   return [...hand].sort((a, b) => {
     const colorDelta = colorOrder.indexOf(a.color) - colorOrder.indexOf(b.color);
     if (colorDelta !== 0) {
@@ -54,7 +54,7 @@ function App() {
   const [snapshot, setSnapshot] = useState<ClientGameSnapshot | null>(null);
   const [playerId, setPlayerId] = useState<string>("");
   const [notice, setNotice] = useState<Notice>(null);
-  const [wildSelection, setWildSelection] = useState<CardColor>("crimson");
+  const [wildSelection, setWildSelection] = useState<CardColor>("red");
 
   useEffect(() => {
     const sessionId = getSessionId();
@@ -147,7 +147,7 @@ function App() {
             <p className="eyebrow">Original multiplayer shedding chaos</p>
             <h1>{GAME_TITLE}</h1>
             <p className="hero-copy">
-              Match by color or signal, stack penalties, pivot with Prism cards, and burn through your hand
+              Match by color or signal, stack penalties, pivot with wild cards, and burn through your hand
               before the table can bury you.
             </p>
           </div>
@@ -257,11 +257,11 @@ function App() {
               <h2>Match preview</h2>
               <p>{snapshot.message}</p>
               <div className="stack-legend">
-                <span className="legend-card legend-crimson">Crimson</span>
-                <span className="legend-card legend-cyan">Cyan</span>
-                <span className="legend-card legend-lime">Lime</span>
-                <span className="legend-card legend-gold">Gold</span>
-                <span className="legend-card legend-wild">Prism</span>
+                <span className="legend-card legend-red">red</span>
+                <span className="legend-card legend-blue">blue</span>
+                <span className="legend-card legend-green">green</span>
+                <span className="legend-card legend-yellow">yellow</span>
+                <span className="legend-card legend-wild">wild</span>
               </div>
             </article>
           </section>
@@ -331,9 +331,9 @@ function App() {
                   </div>
                 </div>
                 <div className="wild-picker">
-                  <span>Prism color</span>
+                  <span>wild color</span>
                   <div className="swatches">
-                    {(["crimson", "cyan", "lime", "gold"] as CardColor[]).map((color) => (
+                    {(["red", "blue", "green", "yellow"] as CardColor[]).map((color) => (
                       <button
                         key={color}
                         className={`swatch swatch-${color} ${wildSelection === color ? "selected" : ""}`}

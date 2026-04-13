@@ -5,7 +5,7 @@ const labelMap: Record<string, string> = {
   skip: "SKIP",
   reverse: "FLIP",
   draw_two: "+2",
-  wild: "PRISM",
+  wild: "WILD",
   wild_draw_four: "+4",
   wild_draw_six: "+6",
   wild_draw_ten: "+10",

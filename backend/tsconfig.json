@@ -3,7 +3,7 @@
   "compilerOptions": { 
     "outDir": "dist",
     "target": "ES2020",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "noImplicitAny":false,
@@ -12,5 +12,5 @@
     "allowJs":true,
     "module":"CommonJS"
   },
-  "include": ["src","../shared/src"],
+  "include": ["src","../shared/src"]
 }
