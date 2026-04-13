@@ -312,7 +312,7 @@ function applyActionCard(
 }
 
 export function describeCard(card: Card) {
-  const colorPart = card.color === "wild" ? "Prism" : card.color[0].toUpperCase() + card.color.slice(1);
+  const colorPart = card.color === "wild" ? "wild" : card.color[0].toUpperCase() + card.color.slice(1);
   if (card.kind === "number") {
     return `${colorPart} ${card.value}`;
   }
@@ -361,15 +361,27 @@ export function playCard(
     }else{
       game.pendingDraw = amount;
     }
-    if(
+    const isDrawCard =
       card.kind === "draw_two" ||
       card.kind === "wild_draw_four" ||
       card.kind === "wild_draw_six" ||
       card.kind === "wild_draw_ten" ||
-      card.kind === "wild_reverse_draw_four"  
-    ) {
-    game.pendingPenaltyKind=card.kind;
-    }
+      card.kind === "wild_reverse_draw_four";
+      
+      if(game.pendingDraw > 0){
+        if (!isDrawCard) {
+          throw new GameRuleError("You must respond to the pending draw with another draw card.");
+        }
+
+        const amount = penaltyAmounts[card.kind];
+        game.pendingDraw += amount;
+      } else {
+        if(isDrawCard){
+          game.pendingDraw = penaltyAmounts[card.kind];
+        }
+
+      }
+    
   }
   const playableCards = getPlayableCards(currentPlayer.hand, game, settings);
   const isPlayable = playableCards.some((entry) => entry.id === card.id);
@@ -390,15 +402,7 @@ export function playCard(
     }else{
       game.pendingDraw = amount;
     }
-    if(
-      card.kind === "draw_two" ||
-      card.kind === "wild_draw_four" ||
-      card.kind === "wild_draw_six" ||
-      card.kind === "wild_draw_ten" ||
-      card.kind === "wild_reverse_draw_four"  
-    ) {
-    game.pendingPenaltyKind=card.kind;
-    }
+    
   }
   if (card.kind ==="skip_everyone"){
     return game;

@@ -15,6 +15,18 @@ function getValue(card) {
     return card.kind === "number" ? String(card.value) : labelMap[card.kind];
 }
 export function CardFace({ card, compact = false }) {
-    const className = `card-shell color-${card.color} ${compact ? "compact" : ""}`;
-    return (_jsxs("div", { className: className, children: [_jsx("div", { className: "card-edge" }), _jsxs("div", { className: "card-inner", children: [_jsx("span", { className: "card-corner", children: getValue(card) }), _jsx("div", { className: "card-glyph", children: getValue(card) }), _jsx("span", { className: "card-name", children: card.kind === "number" ? card.color : labelMap[card.kind] })] })] }));
-}
+    const className = `card${card.color} ${compact ? "compact" : ""}`;
+    const value = getValue(card);
+    return(
+         <div className={`card color-${card.color}`}>
+      <div className="card-corner top-left">{value}</div>
+      <div className="card-glyph">{value}</div>
+      <div className="card-corner bottom-right">{value}</div>
+      <div className="card-name">{card.kind}</div> 
+    </div>
+  );
+}    
+
+        
+
+    
