@@ -30,7 +30,7 @@ export function CardFace({ card, compact = false }: { card: Card; compact?: bool
         <span className="card-name">
           {card.kind === "number" 
           ? card.color.toUpperCase() 
-          : l(abelMap[card.kind] ?? "CARD")}
+          : (labelMap[card.kind] ?? "CARD")}
           </span>
         <span className="card-corner bottom-right">{getValue(card)}</span>
       </div>
