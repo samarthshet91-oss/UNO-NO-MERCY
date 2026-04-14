@@ -227,28 +227,37 @@ export function initializeGame(players: PlayerProfile[]) {
 }
 
 function canStackPenalty(card: Card, game: ServerGameState, settings: RoomSettings) {
-  if (game.pendingDraw === 0 || (card.kind !== "draw_two" && card.kind !== "wild_draw_four")) {
-    return false;
-  }
-  if (settings.brutalStacking) {
-    return true;
-  }
-  return card.kind === game.pendingPenaltyKind;
+  const top = game.discardPile[game.discardPile.length - 1];
+  if (!top) return false;
+  
+  const penaltyAmounts: Partial<Record<CardKind, number>> = {
+    draw_two: 2,
+    wild_draw_four: 4,
+    wild_draw_six: 6,
+    wild_draw_ten: 10,
+    wild_reverse_draw_four: 4,
+  };
+
+  const currentPenalty = penaltyAmounts[top.kind];
+  const nextPenalty = penaltyAmounts[card.kind];
+
+  if (!currentPenalty || !nextPenalty) return false;
+
+  return nextPenalty >= currentPenalty;
 }
 
 function matchesCurrent(card: Card, game: ServerGameState) {
   const top = game.discardPile[game.discardPile.length - 1];
-  if (card.kind === "wild" || card.kind === "wild_draw_four") {
+  if(!top)return true;
+  if (card.color === "wild") return true;
+  if (card.color === game.currentColor) return true;
+  if (card.kind === top.kind) return true;
+  if (card.kind === "number" && top.kind === "number" && card.value === top.value)
+  {
     return true;
   }
-  if (!top) {
-    return true;
-  }
-  return (
-    card.color === game.currentColor ||
-    card.kind === top.kind ||
-    card.value === top.value
-  );
+  
+  return false;
 }
 
 export function getPlayableCards(
